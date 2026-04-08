@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Korena 대시보드{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>Korena 수급 동향 대시보드</h1>
+  <p>기관/외인 수급 흐름을 한눈에 확인하세요.</p>
+  <a href="{{ url_for('supply_demand_page') }}" class="btn btn-primary">📊 수급 대시보드 열기</a>
+</section>
+{% endblock %}

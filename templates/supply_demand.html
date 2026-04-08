@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}수급 동향 대시보드 | Korena{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <header class="dashboard-header">
+    <h1>📊 수급 동향 대시보드</h1>
+    <div class="controls">
+      <div class="btn-group" data-role="period">
+        <button data-days="5">5일</button>
+        <button data-days="10">10일</button>
+        <button data-days="20" class="active">20일</button>
+      </div>
+      <div class="btn-group" data-role="market">
+        <button data-market="KOSPI">코스피</button>
+        <button data-market="KOSDAQ">코스닥</button>
+        <button data-market="all" class="active">전체</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ❶ 오늘의 수급 요약 카드 -->
+  <section class="summary-cards">
+    <div class="card summary-card" id="card-foreign">
+      <div class="card-label">외인 순매수</div>
+      <div class="card-value" data-field="foreign_total_amt">-</div>
+      <div class="card-sub" data-field="foreign_delta">-</div>
+    </div>
+    <div class="card summary-card" id="card-institution">
+      <div class="card-label">기관 순매수</div>
+      <div class="card-value" data-field="institution_total_amt">-</div>
+      <div class="card-sub" data-field="institution_delta">-</div>
+    </div>
+    <div class="card summary-card" id="card-dual">
+      <div class="card-label">쌍끌이 종목</div>
+      <div class="card-value" data-field="dual_buy_count">-</div>
+      <div class="card-sub" data-field="dual_delta">-</div>
+    </div>
+  </section>
+
+  <!-- 데이터 부족 안내 -->
+  <div id="data-warning" class="data-warning" hidden></div>
+
+  <!-- ❷ 섹터 수급 히트맵 -->
+  <section class="panel">
+    <h2>🏭 섹터 수급 히트맵</h2>
+    <div id="sector-heatmap" class="heatmap"></div>
+    <p class="panel-note">
+      막대 색상: <span class="inflow-dot"></span> 유입 ↔ <span class="outflow-dot"></span> 유출 ·
+      오른쪽 라벨: 섹터 로테이션 감지 결과
+    </p>
+  </section>
+
+  <!-- ❸ 연속 순매수 종목 -->
+  <section class="panel">
+    <h2>🔥 연속 순매수 종목 (streak ≥ 3일)</h2>
+    <div class="table-wrapper">
+      <table class="dash-table" id="consecutive-table">
+        <thead>
+          <tr>
+            <th>종목</th>
+            <th>섹터</th>
+            <th class="num">연속</th>
+            <th class="num">누적금액</th>
+            <th>투자자</th>
+            <th class="num">강도</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ❹ 수급 전환 신호 -->
+  <section class="panel">
+    <h2>🔄 수급 전환 신호 (최근 감지)</h2>
+    <div id="flow-reversal-list" class="reversal-list"></div>
+  </section>
+
+  <!-- ❺ 외인 TOP / 기관 TOP -->
+  <section class="panel">
+    <h2>🏆 TOP 순매수</h2>
+    <div class="tab-group">
+      <button class="tab-btn active" data-tab="foreign">외인 순매수</button>
+      <button class="tab-btn" data-tab="institution">기관 순매수</button>
+      <button class="tab-btn" data-tab="sell">순매도</button>
+    </div>
+    <div class="table-wrapper">
+      <table class="dash-table" id="top-table">
+        <thead>
+          <tr>
+            <th class="num">#</th>
+            <th>종목</th>
+            <th>시장</th>
+            <th>섹터</th>
+            <th class="num">순매수(억)</th>
+            <th class="num">등락률</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="dashboard-footer">
+    <div>
+      📅 수집 일수: <span id="data-days">-</span>일 ·
+      총 레코드: <span id="total-records">-</span>건 ·
+      마지막 수집: <span id="last-updated">-</span>
+    </div>
+    <button id="manual-collect-btn" class="btn btn-ghost">🔄 수동 수집 (1일 1회)</button>
+  </footer>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

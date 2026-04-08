@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Korena 수급 동향{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <nav class="topnav">
+    <div class="topnav-brand">Korena</div>
+    <div class="topnav-links">
+      <a href="{{ url_for('index') }}">홈</a>
+      <a href="{{ url_for('supply_demand_page') }}">수급</a>
+    </div>
+  </nav>
+  <main class="main-content">
+    {% block content %}{% endblock %}
+  </main>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
